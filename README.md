@@ -48,28 +48,31 @@ We will want 2 different VMs active on the same network to deploy Active Directo
 
 <h2>Install Active Directory</h2>
 <p>
-<img src="" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/7b549117-8ced-4f2b-852b-eb95676451c6" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/d21f3c9c-ce8e-489d-891c-9a3acf90166c" width="80%" alt="Disk Sanitization Steps"/>
 </p>
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Next we will install Active Directory and set up a new forest as mydomain.com. We can do this within the Server Manager Dashboard on dc-1 by selecting "Add roles and features. Go through the installation wizard, selecting next until you can choose a role to install on the server, where you will check Active Directory Domain Services. Continue through the wizard to install, then we will promote the server to a domain controller by clicking the notification panel, selecting "Promote this server to a domain controller," then completing the wizard.
 </p>
 <br />
 
 <h2>Create a Domain Admin User Within the Domain</h2>
 <p>
-<img src="" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/ed16c4fa-a4ac-4bb2-99aa-46667d100cdd" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/cb9f9c18-316e-47f6-b9ab-125d8e236682" width="80%" alt="Disk Sanitization Steps"/>
+
 </p>
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+In order to make a Domain Admin User in dc-1, we need to first create two Organizational Units, one called "_EMPLOYEES" and one called "_ADMINS" in Active Directory Users and Computers (ADUC). Within ADUC, right click mydomain.com and select New Organizational Unit and type "_EMPLOYEES" for the name, repeat again for "_ADMINS." We'll then create a new user within _ADMINS named Jane Doe, and add her to the group Domain Admins via the properties window. Now we are able to log in as Jane for administration tasks.
 </p>
 <br />
 
 <h2>Join Client-1 VM to the Domain</h2>
 <p>
-<img src="" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/2b0040f0-bfcf-4b7f-99eb-a699f6d7e320" width="80%" alt="Disk Sanitization Steps"/>
 </p>
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+To join Client-1 to the domain (mydomain.com) I will log into client-1, open "About your PC," click the option on the right "Rename this PC (advanced), and click the "Change" button to change its domain or workgroup. Check Domain under "Member of" and enter mydomain.com
 </p>
 <br />
 
