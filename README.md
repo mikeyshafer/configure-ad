@@ -6,10 +6,6 @@
 This demonstration outlines the implementation of on-premises Active Directory within Azure Virtual Machines.<br />
 
 
-<h2>Video Demonstration</h2>
-
-- ### [YouTube: How to Deploy on-premises Active Directory within Azure Compute](https://www.youtube.com)
-
 <h2>Environments and Technologies Used</h2>
 
 - Microsoft Azure (Virtual Machines/Compute)
@@ -78,54 +74,45 @@ To join Client-1 to the domain (mydomain.com) I will log into client-1, open "Ab
 
 <h2>Set Up Remote Desktop for Non-Admin Users on Client-1</h2>
 <p>
-<img src="" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/ce4cd1ae-6832-458d-9439-a76f0ec64887" width="80%" alt="Disk Sanitization Steps"/>
 </p>
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Logged into client-1 as Jane, open system properties (About your PC) and click Remote Desktop. I want to allow domain users to access client-1 through remote desktop, so I will click "Select users that can remotely access this PC," then click "Add," and enter "Domain Users."
 </p>
 <br />
 
 <h2>Create Many Additional Users and Log Onto Client-1 With One of Them</h2>
 <p>
-<img src="h" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/6cf5e111-4609-4ab3-8ac8-c90a36bd55cd" width="80%" alt="Disk Sanitization Steps"/>
 </p>
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Logged into DC-1 as Jane, I will open powershell_ise as an administrator, create a new file and run a script that will generate 1000 new accounts in the _EMPLOYEES OU. Each of these accounts will be able to be signed in to client-1 remotely. In my case I tested by logging in as bak.dax with the password that the script generated for all the accounts, and the login was successful!
 </p>
 <br />
 
 <h2>Configure Group Policy To Lockout Accounts After Too Many Failed Attempts</h2>
 <p>
-<img src="" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/e8bd32cb-e94f-467b-9b03-f7c8df10ce8c" width="80%" alt="Disk Sanitization Steps"/>
 </p>
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Now we will configure Group Policy so that if a user makes too many failed attempts to log in, they will be locked out of their account. To do this, I access the Group Policy Management Console with my admin account logged into dc-1, navigate to "Default Domain Policy" under mydomain.com, right click it and click "Edit." In the Group Policy Management Editor, I can navigate to Computer Configuration > Policies > Windows Settings > Security Settings > Account Policies > Account Lockout Policy, where I am able to make changes to what causes an account to lock out, as well as how long it stays locked along with some other options. I will set it to lock out accounts after 6 failed login attempts, and to stay locked for 10 minutes.
 </p>
 <br />
 
 <h2>Lock Out An Account</h2>
 <p>
-<img src="" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/65b3768a-6ed6-427e-8c22-226898964178" width="80%" alt="Disk Sanitization Steps"/>
 </p>
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+As an example, I will lock out bak.dax by attempting too many logins unsuccessfully to confirm that the Group Policy has taken effect.
 </p>
 <br />
 
 <h2>Unlock the Account From Active Directory</h2>
 <p>
-<img src="" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/f191ca0a-868c-4a8c-bef3-7a1fb0d62921" width="80%" alt="Disk Sanitization Steps"/>
 </p>
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-</p>
-<br />
-
-<h2>Enabling and Disabling Accounts</h2>
-<p>
-<img src="" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-</p>
-<p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+In this case bak.dax is locked out of his account for just 10 minutes, but in the case where for some reason a user is locked out for longer or needs to urgently log back in, its important to know how to unlock someone and reset their password. Back in dc-1, still logged in as an admin, I will find the user bak.dax in ADUC and go to his properties. Under Account I can check "Unlock Account" and click OK. Since he doesn't remember his password I will reset it by right clicking his user in ADUC and selecting "Reset Password." For this example I've reset it to "Password2."
 </p>
 <br />
